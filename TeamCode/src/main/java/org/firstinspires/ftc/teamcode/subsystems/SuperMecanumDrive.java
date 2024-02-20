@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.ChassisSpeeds;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveKinematics;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveOdometry;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveWheelSpeeds;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -61,19 +62,24 @@ public class SuperMecanumDrive extends SubsystemBase {
     }
 
     private void move(ChassisSpeeds chassisSpeeds) {
-
+        MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(chassisSpeeds);
+        m_frontLeft.setTargetVelocity(wheelSpeeds.frontLeftMetersPerSecond);
+        m_frontRight.setTargetVelocity(wheelSpeeds.frontRightMetersPerSecond);
+        m_backLeft.setTargetVelocity(wheelSpeeds.rearLeftMetersPerSecond);
+        m_backRight.setTargetVelocity(wheelSpeeds.rearRightMetersPerSecond);
     }
 
     public void moveFieldRelative(double xVelocityMps, double yVelocityMps, double omegaRps) {
-
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocityMps, yVelocityMps, omegaRps, getHeading());
     }
 
     public Rotation2d getHeading() {
-        return null;
+     Rotation2d heading = Rotation2d.fromDegrees(m_gyro.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+     return heading;
     }
 
     public void resetHeading() {
-
+        m_gyro.resetYaw();
     }
 
     private void updatePose() {
