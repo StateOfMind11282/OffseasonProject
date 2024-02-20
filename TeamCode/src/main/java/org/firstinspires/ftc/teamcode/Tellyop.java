@@ -13,4 +13,7 @@ public class Tellyop extends OpMode {
     public void loop() {
 
     }
+
+    public void driverControls() {
+    }
 }
