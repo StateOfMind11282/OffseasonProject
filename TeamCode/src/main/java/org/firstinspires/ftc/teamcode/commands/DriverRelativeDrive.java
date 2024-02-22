@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
+import org.firstinspires.ftc.teamcode.Constants.MecanumConstants;
 import org.firstinspires.ftc.teamcode.subsystems.GamepadSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SuperMecanumDrive;
 
@@ -18,9 +19,9 @@ public class DriverRelativeDrive extends CommandBase {
 
     @Override
     public void execute() {
-        double xVelocity = m_driver.getLeftY() * 3;
-        double yVelocity = m_driver.getLeftX() * 3;
-        double omega = -m_driver.getRightX() * Math.PI * 2;
+        double xVelocity = m_driver.getLeftY();
+        double yVelocity = m_driver.getLeftX();
+        double omega = -m_driver.getRightX();
         m_mecanumDrive.moveFieldRelative(xVelocity, yVelocity, omega);
     }
 }

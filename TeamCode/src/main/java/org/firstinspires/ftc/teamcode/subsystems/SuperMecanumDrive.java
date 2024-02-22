@@ -13,6 +13,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Constants.MecanumConstants;
+import org.firstinspires.ftc.teamcode.DriverStation;
+import org.firstinspires.ftc.teamcode.MathUtil;
 
 import java.util.Optional;
 
@@ -62,6 +64,10 @@ public class SuperMecanumDrive extends SubsystemBase {
     }
 
     private void move(ChassisSpeeds chassisSpeeds) {
+        chassisSpeeds.vxMetersPerSecond = MathUtil.clamp(chassisSpeeds.vxMetersPerSecond, -1, 1) * MecanumConstants.MaxRobotSpeed_mps;
+        chassisSpeeds.vyMetersPerSecond = MathUtil.clamp(chassisSpeeds.vyMetersPerSecond, -1, 1) * MecanumConstants.MaxRobotSpeed_mps;
+        chassisSpeeds.omegaRadiansPerSecond = MathUtil.clamp(chassisSpeeds.omegaRadiansPerSecond, -1, 1) * MecanumConstants.MaxRobotRotation_radps;
+
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(chassisSpeeds);
         m_frontLeft.setTargetVelocity(wheelSpeeds.frontLeftMetersPerSecond);
         m_frontRight.setTargetVelocity(wheelSpeeds.frontRightMetersPerSecond);
@@ -69,8 +75,9 @@ public class SuperMecanumDrive extends SubsystemBase {
         m_backRight.setTargetVelocity(wheelSpeeds.rearRightMetersPerSecond);
     }
 
-    public void moveFieldRelative(double xVelocityMps, double yVelocityMps, double omegaRps) {
-        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocityMps, yVelocityMps, omegaRps, getHeading());
+    public void moveFieldRelative(double xVelocityPercent, double yVelocityPercent, double omegaPercent) {
+        ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocityPercent, yVelocityPercent, omegaPercent, getHeading());
+        move(chassisSpeeds);
     }
 
     public Rotation2d getHeading() {
@@ -83,11 +90,18 @@ public class SuperMecanumDrive extends SubsystemBase {
     }
 
     private void updatePose() {
-
+        MecanumDriveWheelSpeeds wheelSpeeds = new MecanumDriveWheelSpeeds(
+                m_frontLeft.getVelocity(), m_frontRight.getVelocity(),
+                m_backLeft.getVelocity(), m_backRight.getVelocity()
+        );
+        m_odometry.updateWithTime(DriverStation.getInstance().getElapsedTime(), getHeading(), wheelSpeeds);
     }
 
     @Override
     public void periodic() {
+        DriverStation.getInstance().getTelemetry().addData("pose x", m_robotPose.getX());
+        DriverStation.getInstance().getTelemetry().addData("pose y", m_robotPose.getY());
+        DriverStation.getInstance().getTelemetry().addData("gyro", getHeading());
 
     }
 
