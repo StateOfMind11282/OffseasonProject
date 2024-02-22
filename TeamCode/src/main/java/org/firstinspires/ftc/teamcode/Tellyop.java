@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.DriverRelativeDrive;
 import org.firstinspires.ftc.teamcode.subsystems.GamepadSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SuperMecanumDrive;
-import org.firstinspires.ftc.teamcode.DriverStation.Alliance;
+import org.firstinspires.ftc.teamcode.util.DriverStation;
+import org.firstinspires.ftc.teamcode.util.DriverStation.Alliance;
 
 @TeleOp(name="i named tellyop and every ones mad at me", group="TeleOp")
 public class Tellyop extends OpMode {
@@ -22,7 +23,7 @@ public class Tellyop extends OpMode {
         DriverStation.getInstance().setTelemetry(telemetry);
 
         m_mecanumDrive = new SuperMecanumDrive(null, hardwareMap);
-        m_driver = new GamepadSubsystem(new GamepadEx(gamepad1));
+        m_driver = new GamepadSubsystem(new GamepadEx(gamepad1), 0.2, 0.2, DriverStation.getInstance().getElapsedTimer());
     }
 
     @Override

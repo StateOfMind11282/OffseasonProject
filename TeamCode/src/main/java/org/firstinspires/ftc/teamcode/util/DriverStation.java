@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.util;
 
 import com.arcrobotics.ftclib.util.Timing.Timer;
 
@@ -9,7 +9,8 @@ public class DriverStation {
     private Telemetry telemetry;
     private Alliance m_alliance;
     private Timer m_elapsedTime = new Timer(50000);
-
+    private Object telemetryMutex = new Object();
+    private Object allianceMutex = new Object();
     private DriverStation() {
         m_elapsedTime.start();
     }
@@ -27,11 +28,15 @@ public class DriverStation {
     }
 
     public Alliance getAlliance() {
-        return m_alliance;
+        synchronized(allianceMutex) {
+            return m_alliance;
+        }
     }
 
     public void setAlliance(Alliance alliance) {
-        m_alliance = alliance;
+        synchronized (allianceMutex) {
+            m_alliance = alliance;
+        }
     }
 
     public long getElapsedTime() {
@@ -39,10 +44,20 @@ public class DriverStation {
     }
 
     public Telemetry getTelemetry() {
-        return DriverStation.driverStation.telemetry;
+        synchronized(telemetryMutex) {
+            return DriverStation.driverStation.telemetry;
+        }
     }
 
     public void setTelemetry(Telemetry telemetry) {
-        driverStation.telemetry = telemetry;
+        synchronized(telemetryMutex) {
+            driverStation.telemetry = telemetry;
+        }
     }
+
+    public Timer getElapsedTimer() {
+        return DriverStation.driverStation.m_elapsedTime;
+    }
+
+
 }

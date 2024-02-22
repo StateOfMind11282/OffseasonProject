@@ -4,12 +4,20 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.util.Timing.Timer;
+
+import org.firstinspires.ftc.teamcode.util.DriverStation;
+import org.firstinspires.ftc.teamcode.util.SlewRateLimiter;
 
 public class GamepadSubsystem extends SubsystemBase {
     private GamepadEx m_gamepad;
+    private SlewRateLimiter m_slewRateLimiterLeft;
+    private SlewRateLimiter m_slewRateLimiterRight;
 
-    public GamepadSubsystem(GamepadEx gamepad) {
+    public GamepadSubsystem(GamepadEx gamepad, double leftStickSlewRate, double rightStickSlewRate, Timer timer) {
         m_gamepad = gamepad;
+        m_slewRateLimiterLeft = new SlewRateLimiter(-leftStickSlewRate, leftStickSlewRate, 0, timer);
+        m_slewRateLimiterRight = new SlewRateLimiter(-rightStickSlewRate, rightStickSlewRate, 0, timer);
     }
 
     public GamepadButton buttonX() {
@@ -45,15 +53,19 @@ public class GamepadSubsystem extends SubsystemBase {
     }
 
     public double getLeftX() {
-        return m_gamepad.getLeftX();
+        return m_slewRateLimiterLeft.calculate(m_gamepad.getLeftX());
     }
 
     public double getLeftY() {
-        return m_gamepad.getLeftY();
+        return m_slewRateLimiterLeft.calculate(m_gamepad.getLeftY());
     }
 
     public double getRightX() {
-        return m_gamepad.getRightX();
+        return m_slewRateLimiterRight.calculate(m_gamepad.getRightX());
+    }
+
+    public double getRightY() {
+        return m_slewRateLimiterRight.calculate(m_gamepad.getRightY());
     }
 
     public double getleftAngleRadians() {
