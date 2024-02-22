@@ -99,6 +99,7 @@ public class SuperMecanumDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
+        updatePose();
         DriverStation.getInstance().getTelemetry().addData("pose x", m_robotPose.getX());
         DriverStation.getInstance().getTelemetry().addData("pose y", m_robotPose.getY());
         DriverStation.getInstance().getTelemetry().addData("gyro", getHeading());
