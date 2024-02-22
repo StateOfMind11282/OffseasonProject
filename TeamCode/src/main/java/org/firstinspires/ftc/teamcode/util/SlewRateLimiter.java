@@ -28,9 +28,11 @@ public class SlewRateLimiter {
      * @return The slewed rate.
      */
     public double calculate(double input) {
-        double currentRate = (input - getLastValue()) / (m_elapsedTime.elapsedTime()) - m_lastValueTimestamp;
+        double deltaTime = m_elapsedTime.elapsedTime();
+        double currentRate = (input - getLastValue()) / deltaTime;
         double slewedRate = MathUtil.clamp(currentRate, m_negativeRateLimit, m_positiveRateLimit);
-        return slewedRate;
+        double slewedValue = slewedRate * deltaTime;
+        return slewedValue;
     }
 
     public double getLastValue() {

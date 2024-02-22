@@ -24,7 +24,7 @@ public class SuperMecanumMotor {
     }
 
     public double getVelocity() {
-        return m_motor.getVelocity();
+        return m_motor.getVelocity() * MecanumConstants.DistancePerEncoderTick; // Convert Tps to Mps
     }
 
     public void setInverted(boolean val) {

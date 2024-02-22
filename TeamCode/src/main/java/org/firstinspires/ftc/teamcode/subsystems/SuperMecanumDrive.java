@@ -94,7 +94,7 @@ public class SuperMecanumDrive extends SubsystemBase {
                 m_frontLeft.getVelocity(), m_frontRight.getVelocity(),
                 m_backLeft.getVelocity(), m_backRight.getVelocity()
         );
-        m_odometry.updateWithTime(DriverStation.getInstance().getElapsedTime(), getHeading(), wheelSpeeds);
+        m_robotPose = m_odometry.updateWithTime(DriverStation.getInstance().getElapsedTime(), getHeading(), wheelSpeeds);
     }
 
     @Override
@@ -102,8 +102,9 @@ public class SuperMecanumDrive extends SubsystemBase {
         updatePose();
         DriverStation.getInstance().getTelemetry().addData("pose x", m_robotPose.getX());
         DriverStation.getInstance().getTelemetry().addData("pose y", m_robotPose.getY());
+        DriverStation.getInstance().getTelemetry().addData("Front Left Velocity", m_frontLeft.getVelocity());
+        DriverStation.getInstance().getTelemetry().addData("Front Right Velocity", m_frontRight.getVelocity());
         DriverStation.getInstance().getTelemetry().addData("gyro", getHeading());
-
     }
 
 
