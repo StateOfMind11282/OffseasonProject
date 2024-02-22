@@ -4,11 +4,13 @@ import com.arcrobotics.ftclib.util.Timing.Timer;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.concurrent.TimeUnit;
+
 public class DriverStation {
     private static DriverStation driverStation;
     private Telemetry telemetry;
     private Alliance m_alliance;
-    private Timer m_elapsedTime = new Timer(50000);
+    private Timer m_elapsedTime = new Timer(500000000, TimeUnit.MILLISECONDS);
     private Object telemetryMutex = new Object();
     private Object allianceMutex = new Object();
     private DriverStation() {

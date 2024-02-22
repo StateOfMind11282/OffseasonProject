@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -13,26 +14,24 @@ import org.firstinspires.ftc.teamcode.util.DriverStation.Alliance;
 
 import java.util.Optional;
 
-@TeleOp(name="KennyTestingTeleop", group="TeleOp")
-public class Tellyop extends OpMode {
+@TeleOp(name="KennyTestingTeleop")
+public class Tellyop extends CommandOpMode {
     private SuperMecanumDrive m_mecanumDrive;
     private GamepadSubsystem m_driver;
-
     @Override
-    public void init() {
+    public void initialize() {
         if(DriverStation.getInstance().getAlliance() == Alliance.NONE) {
             DriverStation.getInstance().setAlliance(Alliance.RED);
         }
         DriverStation.getInstance().setTelemetry(telemetry);
 
         m_mecanumDrive = new SuperMecanumDrive(Optional.empty(), hardwareMap);
-        m_driver = new GamepadSubsystem(new GamepadEx(gamepad1), 0.2, 0.2, DriverStation.getInstance().getElapsedTimer());
+        m_driver = new GamepadSubsystem(gamepad1, 1, 1, DriverStation.getInstance().getElapsedTimer());
 
         driverControls();
     }
-
     @Override
-    public void loop() {
+    public void run() {
         CommandScheduler.getInstance().run();
         telemetry.update();
     }

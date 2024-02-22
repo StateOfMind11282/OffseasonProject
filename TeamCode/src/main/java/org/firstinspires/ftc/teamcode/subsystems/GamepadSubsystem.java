@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.util.Timing.Timer;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.util.DriverStation;
 import org.firstinspires.ftc.teamcode.util.SlewRateLimiter;
@@ -14,8 +15,8 @@ public class GamepadSubsystem extends SubsystemBase {
     private SlewRateLimiter m_slewRateLimiterLeft;
     private SlewRateLimiter m_slewRateLimiterRight;
 
-    public GamepadSubsystem(GamepadEx gamepad, double leftStickSlewRate, double rightStickSlewRate, Timer timer) {
-        m_gamepad = gamepad;
+    public GamepadSubsystem(Gamepad gamepad, double leftStickSlewRate, double rightStickSlewRate, Timer timer) {
+        m_gamepad = new GamepadEx(gamepad);
         m_slewRateLimiterLeft = new SlewRateLimiter(-leftStickSlewRate, leftStickSlewRate, 0, timer);
         m_slewRateLimiterRight = new SlewRateLimiter(-rightStickSlewRate, rightStickSlewRate, 0, timer);
     }
@@ -57,7 +58,7 @@ public class GamepadSubsystem extends SubsystemBase {
     }
 
     public double getLeftY() {
-        return m_slewRateLimiterLeft.calculate(m_gamepad.getLeftY());
+        return 0;
     }
 
     public double getRightX() {

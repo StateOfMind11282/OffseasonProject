@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.util;
 
 import com.arcrobotics.ftclib.util.Timing.Timer;
 
+import java.sql.Driver;
+
 public class SlewRateLimiter {
     private double m_positiveRateLimit, m_negativeRateLimit;
     private double m_lastValue;
@@ -28,14 +30,18 @@ public class SlewRateLimiter {
      * @return The slewed rate.
      */
     public double calculate(double input) {
-        double deltaTime = m_elapsedTime.elapsedTime();
-        double currentRate = (input - getLastValue()) / deltaTime;
-        double slewedRate = MathUtil.clamp(currentRate, m_negativeRateLimit, m_positiveRateLimit);
-        double slewedValue = slewedRate * deltaTime;
-        return slewedValue;
+        if(m_lastValue < input) {
+            m_lastValue += 0.075;
+            return m_lastValue;
+        } else if(m_lastValue > input) {
+            m_lastValue -= 0.075;
+            return m_lastValue;
+        } else {
+            return input;
+        }
     }
 
-    public double getLastValue() {
+     public double getLastValue() {
         return m_lastValue;
     }
 }
