@@ -28,9 +28,7 @@ public class GamepadSubsystem extends SubsystemBase {
         return m_gamepad.getGamepadButton(GamepadKeys.Button.B);
     }
 
-    public GamepadButton dpadDown() {
-        return m_gamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN);
-    }
+    public GamepadButton dpadDown() { return m_gamepad.getGamepadButton(GamepadKeys.Button.DPAD_DOWN); }
 
     public GamepadButton dpadUp() {
         return m_gamepad.getGamepadButton(GamepadKeys.Button.DPAD_UP);

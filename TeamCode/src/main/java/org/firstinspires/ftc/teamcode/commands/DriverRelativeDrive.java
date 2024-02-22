@@ -18,7 +18,7 @@ public class DriverRelativeDrive extends CommandBase {
 
     @Override
     public void execute() {
-        double xVelocity = m_driver.getLeftY() * 3;
+        double xVelocity = -m_driver.getLeftY() * 3;
         double yVelocity = m_driver.getLeftX() * 3;
         double omega = -m_driver.getRightX() * Math.PI * 2;
         m_mecanumDrive.moveFieldRelative(xVelocity, yVelocity, omega);

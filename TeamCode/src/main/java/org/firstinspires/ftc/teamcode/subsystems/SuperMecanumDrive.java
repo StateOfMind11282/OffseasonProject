@@ -71,6 +71,7 @@ public class SuperMecanumDrive extends SubsystemBase {
 
     public void moveFieldRelative(double xVelocityMps, double yVelocityMps, double omegaRps) {
         ChassisSpeeds chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelocityMps, yVelocityMps, omegaRps, getHeading());
+        move(chassisSpeeds);
     }
 
     public Rotation2d getHeading() {
