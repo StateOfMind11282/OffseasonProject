@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.DriverRelativeDrive;
 import org.firstinspires.ftc.teamcode.subsystems.GamepadSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.SuperMecanumDrive;
 import org.firstinspires.ftc.teamcode.util.DriverStation;
 import org.firstinspires.ftc.teamcode.util.DriverStation.Alliance;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class Tellyop extends CommandOpMode {
     private SuperMecanumDrive m_mecanumDrive;
     private GamepadSubsystem m_driver;
+    private Intake m_intake;
     @Override
     public void initialize() {
         if(DriverStation.getInstance().getAlliance() == Alliance.NONE) {
